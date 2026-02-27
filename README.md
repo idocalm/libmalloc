@@ -75,10 +75,17 @@ that performing `free(NULL)` is just fine, and would be ignored by a normal allo
 3. Developers may continue to use a `free`-d memory. This is the most dangerous scenario out of these 3. This type of bug (vulnerability) is called *UAF - Use-After-Free*, and could be
 exploited to achieve code execution on a program in many cases. 
 
-## Developing Roadmap
+## Inspiration from iOS XZone malloc
 
-1. API - malloc, free, calloc, realloc
-2. How do you bookeep allocated blocks
-3. research common used improvements: reducing fragmentation, freelists... faster allocation strats
-4. mitigations: how to cope with double-free, separating data and pointer allocations
+This allocator is inspired by the currently used allocator for user space in iOS, which is called xzone-malloc. XZone is considered a very advacned allocator because, for starters, it does type separation (which means pointer & data are not accomedated one near another) and also does separation by sizeclasses and buckets (Buckets are also calculated based on the caller, which means allocations done by different functions are not in the same bucket).
 
+There's a lot more to XZone. Fortunately, it has been made public: 
+
+[https://github.com/apple-oss-distributions/libmalloc/tree/libmalloc-792.41.1]
+
+## Roadmap
+
+In the future, maybe try :
+
+- MTE
+- Guard pages
